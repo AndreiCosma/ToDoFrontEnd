@@ -28,37 +28,39 @@ class _CheckListWidgetState extends State<CheckListWidget> {
             itemCount: state.items.length,
             itemBuilder: (BuildContext context, int index) {
               final item = state.items[index];
-              return Dismissible(
-                onDismissed: (dismissDirection) {
-                  _checkListCrudBloc.dispatch(CheckListDeleteEvent(item.id));
-                },
-                key: Key(item.toString()),
-                child: Card(
-                  elevation: 16.0,
-                  child: ListTile(
-                    onLongPress: () {
-                      _checkListCrudBloc.requestDeleteList(item.id);
-                    },
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(
-                                parentId: item.id,
-                                parentName: item.name,
-                              ),
-                        ),
-                      );
-                    },
-                    leading: Icon(
-                      Icons.check_circle_outline,
-                      size: 30,
+              if (item != null) {
+                return Dismissible(
+                  onDismissed: (dismissDirection) {
+                    _checkListCrudBloc.dispatch(CheckListDeleteEvent(item.id));
+                  },
+                  key: Key(item.toString()),
+                  child: Card(
+                    elevation: 16.0,
+                    child: ListTile(
+                      onLongPress: () {
+                        _checkListCrudBloc.requestDeleteList(item.id);
+                      },
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailPage(
+                                  parentId: item.id,
+                                  parentName: item.name,
+                                ),
+                          ),
+                        );
+                      },
+                      leading: Icon(
+                        Icons.check_circle_outline,
+                        size: 30,
+                      ),
+                      title: Text(item.name),
+                      subtitle: Text(item.creationDate.toIso8601String()),
                     ),
-                    title: Text(item.name),
-                    subtitle: Text(item.creationDate.toIso8601String()),
                   ),
-                ),
-              );
+                );
+              }
             },
           );
         },

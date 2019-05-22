@@ -19,7 +19,7 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
   }
 
   @override
-  CheckListPageState get initialState => CheckListPageStateRefresh([]);
+  CheckListPageState get initialState => CheckListPageStateAwaitAction([]);
 
   @override
   void onEvent(CheckListEvent event) {
@@ -37,11 +37,16 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
   @override
   Stream<CheckListPageState> mapEventToState(CheckListEvent event) async* {
     if (event is CheckListDeleteEvent) {
-      yield CheckListPageStateOneItemDeleted(currentState.items.map((item) {
-        if (item.id != event.id) {
-          return item;
-        }
-      }));
+      try {
+        yield CheckListPageStatePreliminaryResult(
+            currentState.items.map((item) {
+          if (item.id != event.id) {
+            return item;
+          }
+        }).toList());
+      } catch (e) {
+        print(e);
+      }
     }
 
     try {
@@ -56,11 +61,12 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
       } else if (event is CheckListDeleteEvent) {
         await _networkService.deleteCheckList(event.id, token);
       }
+      //Get items from back-end
+      List<CheckListDTO> items = _jsonService
+          .decodeCheckLists(await _networkService.getCheckLists(token));
 
-      yield CheckListPageStateRefresh(
-        _jsonService
-            .decodeCheckLists(await _networkService.getCheckLists(token)),
-      );
+      yield CheckListPageStateActionFinished(items);
+      yield CheckListPageStateAwaitAction(items);
     } catch (e) {
       print(e);
     }
