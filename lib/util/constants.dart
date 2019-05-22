@@ -46,3 +46,19 @@ const kCheckListItemParentId = 'listId';
 const kCheckListItemId = 'id';
 const kCheckListItemName = 'name';
 const kCheckListItemChecked = 'checked';
+
+// access token dto
+
+const kAccessToken = 'accessToken';
+const kRefreshToken = 'refreshToken';
+
+const kClientNameVal = 'e8c3e87d-00fb-428b-888e-dcd6f9b99729';
+const kClientSecretVal = 'd8bbe44d-9fab-4725-8f1e-ced5e551bd56';
+
+// user login request
+
+const kUsername = 'username';
+const kUserPassword = 'password';
+const kDeviceUUID = 'deviceUUID';
+const kClientName = 'clientName';
+const kClientSecret = 'clientSecret';

@@ -1,5 +1,6 @@
+import 'package:check_list_front_end/bloc/detail/check_list_item_crud_bloc.dart';
+import 'package:check_list_front_end/bloc/detail/check_list_item_events.dart';
 import 'package:check_list_front_end/domain/dto/check_list_item_dto.dart';
-import 'package:check_list_front_end/page/detail/bloc/check_list_item_crud_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,10 +48,7 @@ class _CheckListItemsDetailWidgetState
                 ),
           ),
           onRefresh: () {
-            _checkListItemCrudBloc.dispatch(CheckListItemEvent(
-                CheckListItemsEvents.REFRESH,
-                CheckListItemDTO(listId: parentId)));
-            return Future.value();
+            return _checkListItemCrudBloc.refresh(parentId);
           },
         );
       },

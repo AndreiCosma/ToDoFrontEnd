@@ -1,13 +1,26 @@
-import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
-import 'package:check_list_front_end/page/list/list_page.dart';
-import 'package:check_list_front_end/service/json_service.dart';
-import 'package:check_list_front_end/service/network_service.dart';
+import 'package:check_list_front_end/domain/dto/user_login_request_dto.dart';
+import 'package:check_list_front_end/page/splash/splash_page.dart';
+import 'package:check_list_front_end/service/user_service.dart';
 import 'package:check_list_front_end/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import 'component/credential.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _LoginPage();
+}
+
+class _LoginPage extends State<LoginPage> {
+  UserService _userService = UserService();
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfRefreshTokenIsValid();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomPadding: false,
@@ -67,7 +80,16 @@ class LoginPage extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ListPage(),
+                                builder: (context) => SplashPage(
+                                      userLoginRequestDTO: UserLoginRequestDTO(
+                                        username: 'AndreiCosma',
+                                        password: 'P@rola12345',
+                                        clientName: kClientNameVal,
+                                        clientSecret: kClientSecretVal,
+                                        deviceUUID: Uuid().v4(),
+                                      ),
+                                      hasToken: false,
+                                    ),
                               ),
                             );
                           },
@@ -115,9 +137,20 @@ class LoginPage extends StatelessWidget {
         ),
       );
 
-  Future<List<CheckListDTO>> getCheckLists() async {
-    NetworkService networkService = NetworkService();
-    JsonService jsonService = JsonService();
-    return jsonService.decodeCheckLists(await networkService.getCheckLists());
+  void checkIfRefreshTokenIsValid() async {
+    try {
+      print(await _userService.refreshToken());
+      Navigator.pushReplacement(
+        this.context,
+        MaterialPageRoute(
+          builder: (context) => SplashPage(
+                userLoginRequestDTO: UserLoginRequestDTO(),
+                hasToken: true,
+              ),
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 }
