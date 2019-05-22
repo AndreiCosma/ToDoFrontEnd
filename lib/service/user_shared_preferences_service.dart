@@ -15,12 +15,12 @@ class UserSharedPreferencesService {
 
   Future persistToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(kAccessToken, token);
+    await prefs.setString(kAccessToken, token);
   }
 
   Future deleteToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(kAccessToken);
+    await prefs.remove(kAccessToken);
   }
 
   Future<bool> hasRefreshToken() async {
@@ -36,11 +36,11 @@ class UserSharedPreferencesService {
 
   Future persistRefreshToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(kRefreshToken, token);
+    await prefs.setString(kRefreshToken, token);
   }
 
   Future deleteRefreshToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(kRefreshToken);
+    await prefs.remove(kRefreshToken);
   }
 }

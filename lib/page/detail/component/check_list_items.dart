@@ -34,20 +34,29 @@ class _CheckListItemsDetailWidgetState
         return RefreshIndicator(
           child: ListView.builder(
             itemCount: items.length,
-            itemBuilder: (BuildContext context, int index) => Card(
+            itemBuilder: (BuildContext context, int index) {
+              final item = items[index];
+              return Dismissible(
+                onDismissed: (dismissDirection) {
+                  _checkListItemCrudBloc
+                      .dispatch(CheckListItemDeleteEvent(item.toString()));
+                },
+                child: Card(
                   child: CheckboxListTile(
-                    title: Text(items[index].name),
-                    value: items[index].checked,
+                    title: Text(item.name),
+                    value: item.checked,
                     onChanged: (bool value) {
                       setState(() {
-                        items[index].checked = value;
-                        _checkListItemCrudBloc
-                            .requestUpdateListItem(items[index]);
+                        item.checked = value;
+                        _checkListItemCrudBloc.requestUpdateListItem(item);
                       });
                     },
                   ),
                   elevation: 16.0,
                 ),
+                key: Key(item.toString()),
+              );
+            },
           ),
           onRefresh: () {
             return _checkListItemCrudBloc.refresh(parentId);

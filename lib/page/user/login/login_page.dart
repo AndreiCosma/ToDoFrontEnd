@@ -24,7 +24,6 @@ class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomPadding: false,
-        drawer: Drawer(),
         body: Container(
           child: Container(
             decoration: BoxDecoration(

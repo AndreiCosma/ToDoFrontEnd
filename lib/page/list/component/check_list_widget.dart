@@ -22,19 +22,27 @@ class _CheckListWidgetState extends State<CheckListWidget> {
         return RefreshIndicator(
           child: ListView.builder(
             itemCount: items.length,
-            itemBuilder: (BuildContext context, int index) => Card(
+            itemBuilder: (BuildContext context, int index) {
+              final item = items[index];
+              return Dismissible(
+                onDismissed: (dismissDirection) {
+                  _checkListCrudBloc.dispatch(CheckListDeleteEvent(item.id));
+                },
+                key: Key(item.toString()),
+                child: Card(
+                  elevation: 16.0,
                   child: ListTile(
                     onLongPress: () {
-                      _checkListCrudBloc.requestDeleteList(items[index].id);
+                      _checkListCrudBloc.requestDeleteList(item.id);
                     },
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailPage(
-                                parentId: items[index].id,
-                                parentName: items[index].name,
-                                items: items[index].items ?? [],
+                                parentId: item.id,
+                                parentName: item.name,
+                                items: item.items ?? [],
                               ),
                         ),
                       );
@@ -43,11 +51,12 @@ class _CheckListWidgetState extends State<CheckListWidget> {
                       Icons.check_circle_outline,
                       size: 30,
                     ),
-                    title: Text(items[index].name),
-                    subtitle: Text(items[index].creationDate.toIso8601String()),
+                    title: Text(item.name),
+                    subtitle: Text(item.creationDate.toIso8601String()),
                   ),
-                  elevation: 16.0,
                 ),
+              );
+            },
           ),
           onRefresh: () {
             return _checkListCrudBloc.refresh();

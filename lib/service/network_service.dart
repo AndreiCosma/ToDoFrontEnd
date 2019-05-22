@@ -79,6 +79,7 @@ class NetworkService {
   }
 
   Future deleteCheckListItem(String id, String token) async {
+    print('ID ------->' + id);
     Response response = await delete(
       BASE_URL + '/api/v1/item/i/$id',
       headers: {'Authorization': 'Bearer ' + token},
