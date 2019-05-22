@@ -1,35 +1,32 @@
+import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
 import 'package:check_list_front_end/domain/dto/user_login_request_dto.dart';
-import 'package:check_list_front_end/page/list/list_page.dart';
-import 'package:check_list_front_end/page/user/login/login_page.dart';
 import 'package:check_list_front_end/service/user_service.dart';
 import 'package:check_list_front_end/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'component/brand_component.dart';
 
 class SplashPage extends StatefulWidget {
   final UserLoginRequestDTO userLoginRequestDTO;
-  final bool hasToken;
-  const SplashPage({Key key, this.userLoginRequestDTO, this.hasToken})
-      : super(key: key);
+  const SplashPage({Key key, this.userLoginRequestDTO}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() =>
-      _SplashPage(userLoginRequestDTO, hasToken);
+  State<StatefulWidget> createState() => _SplashPage(userLoginRequestDTO);
 }
 
 class _SplashPage extends State<SplashPage> {
+  NavigationBloc _navigationBloc;
   UserService _userService = UserService();
   final UserLoginRequestDTO userLoginRequestDTO;
-  final bool hasToken;
 
-  _SplashPage(this.userLoginRequestDTO, this.hasToken);
+  _SplashPage(this.userLoginRequestDTO);
 
   @override
   void initState() {
     super.initState();
-    print('SPLASH INIT HIT!>>>>>>>>>>>>>>>');
+    _navigationBloc = BlocProvider.of<NavigationBloc>(context);
     attemptLogin();
   }
 
@@ -77,24 +74,13 @@ class _SplashPage extends State<SplashPage> {
 
   void attemptLogin() async {
     try {
-      if (hasToken == false) {
-        await _userService.attemptLogin(userLoginRequestDTO);
-      }
+      await _userService.attemptLogin(userLoginRequestDTO);
       await new Future.delayed(const Duration(seconds: 2));
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ListPage(),
-        ),
-      );
+      _navigationBloc.dispatchNavigationEventMain();
     } catch (e) {
       print(e);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-      );
+      _navigationBloc.dispatchNavigationEventLogin();
+      //navigate state to login
     }
   }
 }

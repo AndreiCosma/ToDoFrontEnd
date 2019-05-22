@@ -5,6 +5,6 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(),
-        body: null,
+        body: Container(),
       );
 }

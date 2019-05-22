@@ -1,8 +1,9 @@
+import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
 import 'package:check_list_front_end/domain/dto/user_login_request_dto.dart';
-import 'package:check_list_front_end/page/splash/splash_page.dart';
 import 'package:check_list_front_end/service/user_service.dart';
 import 'package:check_list_front_end/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'component/credential.dart';
@@ -13,11 +14,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
+  NavigationBloc _navigationBloc;
+
   UserService _userService = UserService();
 
   @override
   void initState() {
     super.initState();
+    _navigationBloc = BlocProvider.of<NavigationBloc>(context);
     checkIfRefreshTokenIsValid();
   }
 
@@ -76,21 +80,14 @@ class _LoginPage extends State<LoginPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)),
                           onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SplashPage(
-                                      userLoginRequestDTO: UserLoginRequestDTO(
-                                        username: 'AndreiCosma',
-                                        password: 'P@rola12345',
-                                        clientName: kClientNameVal,
-                                        clientSecret: kClientSecretVal,
-                                        deviceUUID: Uuid().v4(),
-                                      ),
-                                      hasToken: false,
-                                    ),
-                              ),
-                            );
+                            _navigationBloc.dispatchNavigationEventSplash(
+                                UserLoginRequestDTO(
+                              username: 'AndreiCosma',
+                              password: 'P@rola12345',
+                              clientName: kClientNameVal,
+                              clientSecret: kClientSecretVal,
+                              deviceUUID: Uuid().v4(),
+                            ));
                           },
                           child: Icon(
                             Icons.arrow_forward,
@@ -117,7 +114,7 @@ class _LoginPage extends State<LoginPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          print('create tap');
+                          _navigationBloc.dispatchNavigationEventRegister();
                         },
                         child: Text(
                           'Create',
@@ -138,16 +135,8 @@ class _LoginPage extends State<LoginPage> {
 
   void checkIfRefreshTokenIsValid() async {
     try {
-      print(await _userService.refreshToken());
-      Navigator.pushReplacement(
-        this.context,
-        MaterialPageRoute(
-          builder: (context) => SplashPage(
-                userLoginRequestDTO: UserLoginRequestDTO(),
-                hasToken: true,
-              ),
-        ),
-      );
+      await _userService.refreshToken();
+      _navigationBloc.dispatchNavigationEventMain();
     } catch (e) {
       print(e);
     }
