@@ -15,13 +15,15 @@ class CheckListItemCrudBloc
   NetworkService _networkService = NetworkService();
   UserService _userService = UserService();
 
-  List<CheckListItemDTO> items;
   String checkListParentId;
 
-  CheckListItemCrudBloc({this.items, this.checkListParentId});
+  CheckListItemCrudBloc(String checkListParentId) {
+    this.checkListParentId = checkListParentId;
+    refresh(checkListParentId);
+  }
 
   @override
-  List<CheckListItemDTO> get initialState => items;
+  List<CheckListItemDTO> get initialState => [];
 
   @override
   Stream<List<CheckListItemDTO>> mapEventToState(
@@ -41,6 +43,11 @@ class CheckListItemCrudBloc
         await _networkService.updateCheckListItem(
             jsonEncode(event.checkListItemDTO), token);
       } else if (event is CheckListItemDeleteEvent) {
+        yield currentState.map((item) {
+          if (item.id != event.id) {
+            return item;
+          }
+        });
         await _networkService.deleteCheckListItem(event.id, token);
       }
       yield _jsonService

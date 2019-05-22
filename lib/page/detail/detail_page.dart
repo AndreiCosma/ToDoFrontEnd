@@ -7,17 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'component/check_list_items.dart';
 
 class DetailPage extends StatelessWidget {
-  final List<CheckListItemDTO> items;
   final String parentId;
   final String parentName;
 
-  DetailPage({Key key, this.items, this.parentId, this.parentName})
-      : super(key: key);
+  DetailPage({Key key, this.parentId, this.parentName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    CheckListItemCrudBloc bloc =
-        CheckListItemCrudBloc(items: items, checkListParentId: parentId);
+    CheckListItemCrudBloc bloc = CheckListItemCrudBloc(parentId);
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -32,7 +29,6 @@ class DetailPage extends StatelessWidget {
           },
           listWidget: CheckListItemsDetailWidget(
             parentId: parentId,
-            items: items,
           ),
         ),
       ),

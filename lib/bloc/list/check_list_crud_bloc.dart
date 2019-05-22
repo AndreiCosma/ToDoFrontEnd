@@ -50,6 +50,11 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, List<CheckListDTO>> {
         await _networkService.updateCheckListName(
             jsonEncode(event.checkListDTO), token);
       } else if (event is CheckListDeleteEvent) {
+        yield currentState.map((item) {
+          if (item.id != event.id) {
+            return item;
+          }
+        });
         await _networkService.deleteCheckList(event.id, token);
       }
 

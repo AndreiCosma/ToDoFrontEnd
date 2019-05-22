@@ -42,7 +42,6 @@ class _CheckListWidgetState extends State<CheckListWidget> {
                           builder: (context) => DetailPage(
                                 parentId: item.id,
                                 parentName: item.name,
-                                items: item.items ?? [],
                               ),
                         ),
                       );

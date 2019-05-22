@@ -39,7 +39,7 @@ class _CheckListItemsDetailWidgetState
               return Dismissible(
                 onDismissed: (dismissDirection) {
                   _checkListItemCrudBloc
-                      .dispatch(CheckListItemDeleteEvent(item.toString()));
+                      .dispatch(CheckListItemDeleteEvent(item.id));
                 },
                 child: Card(
                   child: CheckboxListTile(
