@@ -1,5 +1,6 @@
 import 'package:check_list_front_end/bloc/list/check_list_crud_bloc.dart';
 import 'package:check_list_front_end/bloc/list/check_list_events.dart';
+import 'package:check_list_front_end/bloc/list/check_list_state.dart';
 import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
 import 'package:check_list_front_end/page/detail/detail_page.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,17 @@ class _CheckListWidgetState extends State<CheckListWidget> {
     CheckListCrudBloc _checkListCrudBloc =
         BlocProvider.of<CheckListCrudBloc>(context);
 
-    return BlocBuilder<CheckListEvent, List<CheckListDTO>>(
-      bloc: _checkListCrudBloc,
-      builder: (context, items) {
-        return RefreshIndicator(
-          child: ListView.builder(
-            itemCount: items.length,
+    return RefreshIndicator(
+      onRefresh: () {
+        return _checkListCrudBloc.refresh();
+      },
+      child: BlocBuilder<CheckListEvent, CheckListPageState>(
+        bloc: _checkListCrudBloc,
+        builder: (context, state) {
+          return ListView.builder(
+            itemCount: state.items.length,
             itemBuilder: (BuildContext context, int index) {
-              final item = items[index];
+              final item = state.items[index];
               return Dismissible(
                 onDismissed: (dismissDirection) {
                   _checkListCrudBloc.dispatch(CheckListDeleteEvent(item.id));
@@ -56,12 +60,9 @@ class _CheckListWidgetState extends State<CheckListWidget> {
                 ),
               );
             },
-          ),
-          onRefresh: () {
-            return _checkListCrudBloc.refresh();
-          },
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

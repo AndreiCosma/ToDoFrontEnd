@@ -1,6 +1,9 @@
 import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class CheckListEvent {}
+abstract class CheckListEvent extends Equatable {
+  CheckListEvent([List props = const []]) : super(props);
+}
 
 class CheckListRefreshEvent extends CheckListEvent {}
 
