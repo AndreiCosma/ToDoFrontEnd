@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
+import 'package:check_list_front_end/exception/server_code_exception.dart';
 import 'package:check_list_front_end/service/json_service.dart';
 import 'package:check_list_front_end/service/network_service.dart';
 import 'package:check_list_front_end/service/user_service.dart';
@@ -69,6 +70,10 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
       yield CheckListPageStateAwaitAction(items);
     } catch (e) {
       print(e);
+      if (e is UnauthorisedException) {
+        await _userService.refreshToken();
+        dispatch(event);
+      }
     }
   }
 
