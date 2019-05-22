@@ -62,3 +62,6 @@ const kUserPassword = 'password';
 const kDeviceUUID = 'deviceUUID';
 const kClientName = 'clientName';
 const kClientSecret = 'clientSecret';
+const kUserPasswordConfirmation = 'passwordConfirmation';
+const kUserRegUsername = 'userName';
+const kUserEmail = 'email';

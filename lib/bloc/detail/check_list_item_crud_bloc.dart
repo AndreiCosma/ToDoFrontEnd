@@ -16,8 +16,9 @@ class CheckListItemCrudBloc
   UserService _userService = UserService();
 
   List<CheckListItemDTO> items;
+  String checkListParentId;
 
-  CheckListItemCrudBloc({this.items});
+  CheckListItemCrudBloc({this.items, this.checkListParentId});
 
   @override
   List<CheckListItemDTO> get initialState => items;
@@ -42,12 +43,17 @@ class CheckListItemCrudBloc
       } else if (event is CheckListItemDeleteEvent) {
         await _networkService.deleteCheckListItem(event.id, token);
       }
+      yield _jsonService
+          .decodeCheckList(
+            jsonDecode(
+                await _networkService.getCheckList(checkListParentId, token)),
+          )
+          .items;
     } catch (e) {
       if (e is UnauthorisedException) {
         await _userService.refreshToken();
         dispatch(event);
       }
-      print(e);
     }
   }
 

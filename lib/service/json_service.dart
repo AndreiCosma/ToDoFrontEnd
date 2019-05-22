@@ -14,21 +14,17 @@ class JsonService {
   }
 
   CheckListDTO decodeCheckList(dynamic json) {
-    print('Decode items --->' + json[kCheckListItems].runtimeType.toString());
     List<CheckListItemDTO> items = decodeCheckListItems(json[kCheckListItems]);
-    print('Items -------->' + items.toString());
     return CheckListDTO(
       id: json[kCheckListId],
       name: json[kCheckListName],
       items: items,
       creationDate:
           DateTime.fromMillisecondsSinceEpoch(json[kCheckListCreationDate]),
-      lastModificationDate: DateTime.now(),
     );
   }
 
   List<CheckListItemDTO> decodeCheckListItems(List<dynamic> items) {
-    print('ITEMS --------> ' + items.toString());
     List<CheckListItemDTO> list = [];
     items.forEach((item) => list.add(decodeCheckListItem(item)));
     return list;

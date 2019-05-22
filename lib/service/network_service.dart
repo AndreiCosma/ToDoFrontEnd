@@ -35,7 +35,10 @@ class NetworkService {
   Future updateCheckListName(dynamic checkListDto, String token) async {
     Response response = await put(
       BASE_URL + '/api/v1/list',
-      headers: {'Authorization': 'Bearer ' + token},
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'content-type': 'application/json',
+      },
       body: checkListDto,
     );
     if (response.statusCode == 204) {
@@ -104,8 +107,15 @@ class NetworkService {
   }
 
   Future updateCheckListItem(String jsonEncode, String token) async {
-    Response response = await put(BASE_URL + '/api/v1/item/new',
-        headers: {'Authorization': 'Bearer ' + token}, body: jsonEncode);
+    print(jsonEncode);
+    Response response = await put(
+      BASE_URL + '/api/v1/item/',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'content-type': 'application/json',
+      },
+      body: jsonEncode,
+    );
     if (response.statusCode == 204) {
       return response.body;
     } else if (response.statusCode == 401) {
@@ -128,7 +138,7 @@ class NetworkService {
 
   Future<String> requestLogin(String userCredentials) async {
     Response response = await post(BASE_URL + '/login',
-        headers: {'content-type': "application/json"}, body: userCredentials);
+        headers: {'content-type': 'application/json'}, body: userCredentials);
     if (response.statusCode == 200) {
       return response.body;
     } else if (response.statusCode == 401) {

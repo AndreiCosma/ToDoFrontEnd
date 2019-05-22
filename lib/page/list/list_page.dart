@@ -10,6 +10,7 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       drawer: Drawer(),
       appBar: AppBar(
         title: Text('To-Do'),

@@ -16,9 +16,11 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CheckListItemCrudBloc bloc = CheckListItemCrudBloc(items: items);
+    CheckListItemCrudBloc bloc =
+        CheckListItemCrudBloc(items: items, checkListParentId: parentId);
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text(parentName),
       ),

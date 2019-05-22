@@ -41,6 +41,8 @@ class _CheckListItemsDetailWidgetState
                     onChanged: (bool value) {
                       setState(() {
                         items[index].checked = value;
+                        _checkListItemCrudBloc
+                            .requestUpdateListItem(items[index]);
                       });
                     },
                   ),

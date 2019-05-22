@@ -1,3 +1,5 @@
+import 'package:check_list_front_end/util/constants.dart';
+
 class UserRegistrationDTO {
   final String email;
   final String username;
@@ -13,4 +15,13 @@ class UserRegistrationDTO {
       this.passwordConfirmation,
       this.clientName,
       this.clientSecret});
+
+  Map<String, dynamic> toJson() => {
+        kUserEmail: this.email,
+        kUserRegUsername: this.username,
+        kUserPassword: this.password,
+        kUserPasswordConfirmation: this.passwordConfirmation,
+        kClientName: this.clientName,
+        kClientSecret: this.clientSecret
+      };
 }
