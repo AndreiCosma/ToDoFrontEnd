@@ -27,7 +27,7 @@ class CheckListReadEvent extends CheckListItemEvent {
 }
 
 class CheckListItemDeleteEvent extends CheckListItemEvent {
-  final String id;
+  final CheckListItemDTO dto;
 
-  CheckListItemDeleteEvent(this.id);
+  CheckListItemDeleteEvent(this.dto);
 }

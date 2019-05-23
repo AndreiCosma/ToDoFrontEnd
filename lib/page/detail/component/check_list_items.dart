@@ -44,7 +44,7 @@ class _CheckListItemsDetailWidgetState
                 return Dismissible(
                   onDismissed: (dismissDirection) {
                     _checkListItemCrudBloc
-                        .dispatch(CheckListItemDeleteEvent(item.id));
+                        .dispatch(CheckListItemDeleteEvent(item));
                   },
                   child: InkWell(
                     onLongPress: () {
@@ -64,7 +64,7 @@ class _CheckListItemsDetailWidgetState
                       elevation: 16.0,
                     ),
                   ),
-                  key: Key(item.toString()),
+                  key: Key(item.id),
                 );
               }
             },

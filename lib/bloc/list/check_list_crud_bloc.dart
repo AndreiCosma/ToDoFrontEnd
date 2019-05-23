@@ -39,12 +39,8 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
   Stream<CheckListPageState> mapEventToState(CheckListEvent event) async* {
     if (event is CheckListDeleteEvent) {
       try {
-        yield CheckListPageStatePreliminaryResult(
-            currentState.items.map((item) {
-          if (item.id != event.id) {
-            return item;
-          }
-        }).toList());
+        currentState.items.remove(event.dto);
+        yield CheckListPageStatePreliminaryResult(currentState.items);
       } catch (e) {
         print(e);
       }
@@ -67,7 +63,7 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
         await _networkService.updateCheckListName(
             jsonEncode(event.checkListDTO.toJson()), token);
       } else if (event is CheckListDeleteEvent) {
-        await _networkService.deleteCheckList(event.id, token);
+        await _networkService.deleteCheckList(event.dto.id, token);
       }
 
       yield CheckListPageStateAwaitAction(this.currentState.items);
@@ -88,8 +84,8 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
     dispatch(CheckListUpdateEvent(checkListDTO));
   }
 
-  void requestDeleteList(String id) {
-    dispatch(CheckListDeleteEvent(id));
+  void requestDeleteList(CheckListDTO dto) {
+    dispatch(CheckListDeleteEvent(dto));
   }
 
   Future refresh() async {

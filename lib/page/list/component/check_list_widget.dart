@@ -33,9 +33,9 @@ class _CheckListWidgetState extends State<CheckListWidget> {
               if (item != null) {
                 return Dismissible(
                   onDismissed: (dismissDirection) {
-                    _checkListCrudBloc.dispatch(CheckListDeleteEvent(item.id));
+                    _checkListCrudBloc.dispatch(CheckListDeleteEvent(item));
                   },
-                  key: Key(item.toString()),
+                  key: Key(item.id),
                   child: Card(
                     elevation: 16.0,
                     child: ListTile(

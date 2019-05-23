@@ -39,12 +39,8 @@ class CheckListItemCrudBloc
       CheckListItemEvent event) async* {
     if (event is CheckListItemDeleteEvent) {
       try {
-        yield CheckListItemDetailPageStatePreliminaryResult(
-            currentState.items.map((item) {
-          if (item.id != event.id) {
-            return item;
-          }
-        }).toList());
+        currentState.items.remove(event.dto);
+        yield CheckListItemDetailPageStatePreliminaryResult(currentState.items);
       } catch (e) {
         print(e);
       }
@@ -72,7 +68,7 @@ class CheckListItemCrudBloc
         await _networkService.updateCheckListItem(
             jsonEncode(event.checkListItemDTO), token);
       } else if (event is CheckListItemDeleteEvent) {
-        await _networkService.deleteCheckListItem(event.id, token);
+        await _networkService.deleteCheckListItem(event.dto.id, token);
       }
 
       yield CheckListItemDetailPageStateAwaitAction(this.currentState.items);
@@ -92,8 +88,8 @@ class CheckListItemCrudBloc
     dispatch(CheckListItemUpdateEvent(item));
   }
 
-  void requestDeleteListItem(String id) {
-    dispatch(CheckListItemDeleteEvent(id));
+  void requestDeleteListItem(CheckListItemDTO dto) {
+    dispatch(CheckListItemDeleteEvent(dto));
   }
 
   Future refresh(String id) async {
