@@ -148,4 +148,16 @@ class NetworkService {
       throw Exception('HTTP CODE NOT 200! Code is ${response.statusCode}');
     }
   }
+
+  Future<String> requestNewAccount(String userCredentials) async {
+    Response response = await post(BASE_URL + '/register',
+        headers: {'content-type': 'application/json'}, body: userCredentials);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else if (response.statusCode == 401) {
+      throw UnauthorisedException();
+    } else {
+      throw Exception('HTTP CODE NOT 200! Code is ${response.statusCode}');
+    }
+  }
 }

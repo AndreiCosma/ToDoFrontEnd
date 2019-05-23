@@ -2,12 +2,23 @@ import 'package:check_list_front_end/util/constants.dart';
 import 'package:flutter/material.dart';
 
 class CredentialWidget extends StatefulWidget {
+  final TextEditingController usernameController;
+  final TextEditingController passwordController;
+
+  const CredentialWidget(
+      {Key key, this.usernameController, this.passwordController})
+      : super(key: key);
   @override
-  _CredentialWidgetState createState() => _CredentialWidgetState();
+  _CredentialWidgetState createState() =>
+      _CredentialWidgetState(this.usernameController, this.passwordController);
 }
 
 class _CredentialWidgetState extends State<CredentialWidget> {
   bool isObscured = true;
+  final TextEditingController usernameController;
+  final TextEditingController passwordController;
+
+  _CredentialWidgetState(this.usernameController, this.passwordController);
 
   @override
   Widget build(BuildContext context) => Form(
@@ -20,6 +31,7 @@ class _CredentialWidgetState extends State<CredentialWidget> {
                 padding:
                     const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
                 child: TextFormField(
+                  controller: usernameController,
                   decoration: kFormNameItemDecoration,
                   autovalidate: true,
                   validator: (value) {},
@@ -31,6 +43,7 @@ class _CredentialWidgetState extends State<CredentialWidget> {
                 padding:
                     const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
                 child: TextFormField(
+                  controller: passwordController,
                   obscureText: isObscured,
                   decoration: InputDecoration(
                     filled: true,

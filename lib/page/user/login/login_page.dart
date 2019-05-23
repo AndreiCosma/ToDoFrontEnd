@@ -14,6 +14,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   NavigationBloc _navigationBloc;
 
   UserService _userService = UserService();
@@ -56,7 +59,10 @@ class _LoginPage extends State<LoginPage> {
                 ),
                 Expanded(
                   flex: 3,
-                  child: CredentialWidget(),
+                  child: CredentialWidget(
+                    usernameController: usernameController,
+                    passwordController: passwordController,
+                  ),
                 ),
                 Expanded(
                   flex: 3,
@@ -83,8 +89,8 @@ class _LoginPage extends State<LoginPage> {
                             print('PRESSED ---------->');
                             _navigationBloc.dispatchNavigationEventSplash(
                                 UserLoginRequestDTO(
-                              username: 'AndreiCosma',
-                              password: 'P@rola12345',
+                              username: usernameController.text,
+                              password: passwordController.text,
                               clientName: kClientNameVal,
                               clientSecret: kClientSecretVal,
                               deviceUUID: Uuid().v4(),

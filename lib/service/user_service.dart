@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:check_list_front_end/domain/dto/token_dto.dart';
 import 'package:check_list_front_end/domain/dto/user_login_request_dto.dart';
+import 'package:check_list_front_end/domain/dto/user_registration_request_dto.dart';
 import 'package:check_list_front_end/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,5 +38,10 @@ class UserService {
     prefs.setString(kRefreshToken, tokenDTO.refreshToken);
 
     return tokenDTO;
+  }
+
+  Future registerUser(UserRegistrationDTO user) async {
+    await networkService.requestNewAccount(jsonEncode(user));
+    return;
   }
 }

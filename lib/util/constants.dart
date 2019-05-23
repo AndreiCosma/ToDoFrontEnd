@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 const kBrandingTextStyle = TextStyle(
     fontSize: 96,
@@ -21,6 +22,22 @@ const kSecondaryTextStyle = TextStyle(
     fontWeight: FontWeight.normal,
     color: Colors.white70);
 
+const kLogoutTextStyle = TextStyle(
+  fontSize: 34,
+  letterSpacing: 0.15,
+  textBaseline: TextBaseline.alphabetic,
+  fontWeight: FontWeight.normal,
+  color: Colors.white70,
+);
+
+const kCreateAccountTextStyle = TextStyle(
+  fontSize: 34,
+  letterSpacing: 0.15,
+  textBaseline: TextBaseline.alphabetic,
+  fontWeight: FontWeight.normal,
+  color: Colors.white70,
+);
+
 const kFormNameItemDecoration = InputDecoration(
   filled: true,
   fillColor: Colors.black54,
@@ -33,6 +50,24 @@ const kFormNameItemDecoration = InputDecoration(
   prefixIcon: Icon(Icons.person),
 );
 
+const kFormEmailItemDecoration = InputDecoration(
+  filled: true,
+  fillColor: Colors.black54,
+  hintText: 'Email',
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(35),
+    ),
+  ),
+  prefixIcon: Icon(Icons.email),
+);
+
+const kCommitButtonTextStyle =
+    TextStyle(color: Colors.white70, fontSize: 20, letterSpacing: 0.15);
+
+const kEditAlertStyle = AlertStyle(
+  descStyle: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold),
+);
 //check list fields
 
 const kCheckListId = 'id';

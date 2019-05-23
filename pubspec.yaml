@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: ^0.5.2
   uuid: ^2.0.1
   equatable: ^0.2.4
+  rflutter_alert: ^1.0.2
 
 
 dev_dependencies:

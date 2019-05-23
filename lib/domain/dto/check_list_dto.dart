@@ -4,7 +4,7 @@ import 'check_list_item_dto.dart';
 
 class CheckListDTO {
   final String id;
-  final String name;
+  String name;
   final List<CheckListItemDTO> items;
   final DateTime creationDate;
 
@@ -13,7 +13,7 @@ class CheckListDTO {
   Map<String, dynamic> toJson() => {
         kCheckListId: this.id,
         kCheckListName: this.name,
-        kCheckListItems: this.items.map((it) => it.toJson()),
-        kCheckListCreationDate: this.creationDate
+        kCheckListItems: CheckListItemDTO.toJsonList(items),
+        kCheckListCreationDate: this.creationDate.toIso8601String()
       };
 }

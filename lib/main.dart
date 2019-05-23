@@ -3,13 +3,19 @@ import 'package:check_list_front_end/page/splash/splash_page.dart';
 import 'package:check_list_front_end/page/user/login/login_page.dart';
 import 'package:check_list_front_end/page/user/register/register_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/navigation/navigation_bloc.dart';
 import 'bloc/navigation/navigation_event.dart';
 import 'bloc/navigation/navigation_state.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(new MyApp());
+  });
+}
 
 class MyApp extends StatefulWidget {
   @override

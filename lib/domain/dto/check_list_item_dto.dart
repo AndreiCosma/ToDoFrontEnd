@@ -14,4 +14,10 @@ class CheckListItemDTO {
         kCheckListItemName: this.name,
         kCheckListItemChecked: this.checked
       };
+
+  static List toJsonList(List<CheckListItemDTO> list) {
+    List jsonList = List();
+    list.map((item) => jsonList.add(item.toJson())).toList();
+    return jsonList;
+  }
 }
