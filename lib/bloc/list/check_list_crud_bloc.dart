@@ -16,7 +16,14 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
   UserService _userService = UserService();
 
   CheckListCrudBloc() {
+    print('Constructor called LISTS');
     dispatch(CheckListRefreshEvent());
+  }
+
+  @override
+  void onTransition(Transition<CheckListEvent, CheckListPageState> transition) {
+    super.onTransition(transition);
+    print(transition);
   }
 
   @override
@@ -24,7 +31,6 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
 
   @override
   void onEvent(CheckListEvent event) {
-    // TODO: implement onEvent
     print('event:' + event.toString());
     super.onEvent(event);
   }
@@ -76,15 +82,15 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
     }
   }
 
-  void requestCreateNewList() {
+  void dispatchCreateNewList() {
     dispatch(CheckListCreateEvent());
   }
 
-  void requestUpdateList(CheckListDTO checkListDTO) {
+  void dispatchUpdateList(CheckListDTO checkListDTO) {
     dispatch(CheckListUpdateEvent(checkListDTO));
   }
 
-  void requestDeleteList(CheckListDTO dto) {
+  void dispatchDeleteList(CheckListDTO dto) {
     dispatch(CheckListDeleteEvent(dto));
   }
 

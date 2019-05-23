@@ -26,6 +26,7 @@ class _CheckListWidgetState extends State<CheckListWidget> {
       child: BlocBuilder<CheckListEvent, CheckListPageState>(
         bloc: _checkListCrudBloc,
         builder: (context, state) {
+          print('Check Lists COUNT ---> ${state.items.length}');
           return ListView.builder(
             itemCount: state.items.length,
             itemBuilder: (BuildContext context, int index) {
@@ -33,7 +34,7 @@ class _CheckListWidgetState extends State<CheckListWidget> {
               if (item != null) {
                 return Dismissible(
                   onDismissed: (dismissDirection) {
-                    _checkListCrudBloc.dispatch(CheckListDeleteEvent(item));
+                    _checkListCrudBloc.dispatchDeleteList(item);
                   },
                   key: Key(item.id),
                   child: Card(
@@ -48,8 +49,8 @@ class _CheckListWidgetState extends State<CheckListWidget> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailPage(
-                                  parentId: item.id,
                                   parentName: item.name,
+                                  parentId: item.id,
                                 ),
                           ),
                         );
@@ -85,7 +86,7 @@ class _CheckListWidgetState extends State<CheckListWidget> {
           DialogButton(
             onPressed: () {
               item.name = nameEditController.text;
-              bloc.requestUpdateList(item);
+              bloc.dispatchUpdateList(item);
               Navigator.pop(context);
             },
             child: Text(

@@ -20,6 +20,7 @@ class CheckListItemCrudBloc
 
   CheckListItemCrudBloc(String checkListParentId) {
     this.checkListParentId = checkListParentId;
+    print('Constructor called ITEMS');
     dispatch(CheckListItemRefreshEvent(checkListParentId));
   }
 
@@ -28,10 +29,16 @@ class CheckListItemCrudBloc
       CheckListItemDetailPageStateAwaitAction([]);
 
   @override
+  void onEvent(CheckListItemEvent event) {
+    super.onEvent(event);
+    print('Event: $event');
+  }
+
+  @override
   void onTransition(
       Transition<CheckListItemEvent, CheckListItemDetailPageState> transition) {
     super.onTransition(transition);
-    print('Transition: $transition');
+    print(transition);
   }
 
   @override
@@ -80,15 +87,15 @@ class CheckListItemCrudBloc
     }
   }
 
-  void requestNewListItem(String id) {
+  void dispatchNewListItem(String id) {
     dispatch(CheckListItemCreateEvent(id));
   }
 
-  void requestUpdateListItem(CheckListItemDTO item) {
+  void dispatchUpdateListItem(CheckListItemDTO item) {
     dispatch(CheckListItemUpdateEvent(item));
   }
 
-  void requestDeleteListItem(CheckListItemDTO dto) {
+  void dispatchDeleteListItem(CheckListItemDTO dto) {
     dispatch(CheckListItemDeleteEvent(dto));
   }
 

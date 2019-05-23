@@ -49,7 +49,7 @@ class ListPage extends StatelessWidget {
         bloc: bloc,
         child: ListPageTemplate(
           callback: () {
-            bloc.requestCreateNewList();
+            bloc.dispatchCreateNewList();
           },
           listWidget: CheckListWidget(),
         ),

@@ -10,7 +10,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 class CheckListItemsDetailWidget extends StatefulWidget {
   final String parentId;
 
-  const CheckListItemsDetailWidget({Key key, this.parentId}) : super(key: key);
+  CheckListItemsDetailWidget({Key key, this.parentId}) : super(key: key);
 
   @override
   _CheckListItemsDetailWidgetState createState() =>
@@ -22,20 +22,20 @@ class _CheckListItemsDetailWidgetState
   String parentId;
 
   _CheckListItemsDetailWidgetState({this.parentId});
-  CheckListItemCrudBloc _checkListItemCrudBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkListItemCrudBloc = BlocProvider.of<CheckListItemCrudBloc>(context);
-  }
 
   @override
   Widget build(BuildContext context) {
+    CheckListItemCrudBloc _checkListItemCrudBloc =
+        BlocProvider.of<CheckListItemCrudBloc>(context);
+
     return RefreshIndicator(
+      onRefresh: () {
+        return _checkListItemCrudBloc.refresh(parentId);
+      },
       child: BlocBuilder<CheckListItemEvent, CheckListItemDetailPageState>(
         bloc: _checkListItemCrudBloc,
         builder: (context, state) {
+          print('Check list ITEM COUNT ---> ${state.items.length}');
           return ListView.builder(
             itemCount: state.items.length,
             itemBuilder: (BuildContext context, int index) {
@@ -43,44 +43,34 @@ class _CheckListItemsDetailWidgetState
               if (item != null) {
                 return Dismissible(
                   onDismissed: (dismissDirection) {
-                    _checkListItemCrudBloc
-                        .dispatch(CheckListItemDeleteEvent(item));
+                    _checkListItemCrudBloc.dispatchDeleteListItem(item);
                   },
-                  child: InkWell(
-                    onLongPress: () {
-                      showEditDialog(item, _checkListItemCrudBloc);
-                    },
-                    child: Card(
+                  key: Key(item.id),
+                  child: Card(
+                    child: InkWell(
+                      onLongPress: () {
+                        showEditDialog(item, _checkListItemCrudBloc);
+                      },
                       child: CheckboxListTile(
                         title: Text(item.name),
                         value: item.checked,
                         onChanged: (bool value) {
                           setState(() {
                             item.checked = value;
-                            _checkListItemCrudBloc.requestUpdateListItem(item);
                           });
+                          _checkListItemCrudBloc.dispatchUpdateListItem(item);
                         },
                       ),
-                      elevation: 16.0,
                     ),
+                    elevation: 16.0,
                   ),
-                  key: Key(item.id),
                 );
               }
             },
           );
         },
       ),
-      onRefresh: () {
-        return _checkListItemCrudBloc.refresh(parentId);
-      },
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _checkListItemCrudBloc.dispose();
   }
 
   void showEditDialog(CheckListItemDTO item, CheckListItemCrudBloc bloc) {
@@ -101,7 +91,7 @@ class _CheckListItemsDetailWidgetState
           DialogButton(
             onPressed: () {
               item.name = nameEditController.text;
-              bloc.requestUpdateListItem(item);
+              bloc.dispatchUpdateListItem(item);
               Navigator.pop(context);
             },
             child: Text(
