@@ -28,6 +28,13 @@ class CheckListItemCrudBloc
       CheckListItemDetailPageStateAwaitAction([]);
 
   @override
+  void onTransition(
+      Transition<CheckListItemEvent, CheckListItemDetailPageState> transition) {
+    super.onTransition(transition);
+    print('Transition: $transition');
+  }
+
+  @override
   Stream<CheckListItemDetailPageState> mapEventToState(
       CheckListItemEvent event) async* {
     if (event is CheckListItemDeleteEvent) {
@@ -47,25 +54,28 @@ class CheckListItemCrudBloc
       String token = await _userService.getToken();
 
       if (event is CheckListItemRefreshEvent) {
+        //Get items from backend
+        yield CheckListItemDetailPageStateActionFinished(_jsonService
+            .decodeCheckList(
+              jsonDecode(
+                  await _networkService.getCheckList(checkListParentId, token)),
+            )
+            .items);
       } else if (event is CheckListItemCreateEvent) {
-        await _networkService.requestNewCheckListItem(event.id, token);
+        CheckListItemDTO item = _jsonService.decodeCheckListItem(jsonDecode(
+            await _networkService.requestNewCheckListItem(event.id, token)));
+        this.currentState.items.add(item);
+        yield CheckListItemDetailPageStateActionFinished(
+            this.currentState.items);
       } else if (event is CheckListItemUpdateEvent) {
+        CheckListItemDetailPageStateActionFinished(this.currentState.items);
         await _networkService.updateCheckListItem(
             jsonEncode(event.checkListItemDTO), token);
       } else if (event is CheckListItemDeleteEvent) {
         await _networkService.deleteCheckListItem(event.id, token);
       }
 
-      //Get items from back-end
-
-      List<CheckListItemDTO> items = _jsonService
-          .decodeCheckList(
-            jsonDecode(
-                await _networkService.getCheckList(checkListParentId, token)),
-          )
-          .items;
-      yield CheckListItemDetailPageStateActionFinished(items);
-      yield CheckListItemDetailPageStateAwaitAction(items);
+      yield CheckListItemDetailPageStateAwaitAction(this.currentState.items);
     } catch (e) {
       if (e is UnauthorisedException) {
         await _userService.refreshToken();

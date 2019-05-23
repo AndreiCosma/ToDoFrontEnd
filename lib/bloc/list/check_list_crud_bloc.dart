@@ -53,21 +53,24 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
     try {
       String token = await _userService.getToken();
       if (event is CheckListRefreshEvent) {
+        //Get items from back-end
+        yield CheckListPageStateActionFinished(_jsonService
+            .decodeCheckLists(await _networkService.getCheckLists(token)));
       } else if (event is CheckListCreateEvent) {
-        await _networkService.requestNewCheckList(token);
+        CheckListDTO item = _jsonService.decodeCheckList(
+            jsonDecode(await _networkService.requestNewCheckList(token)));
+        this.currentState.items.add(item);
+        yield CheckListPageStateActionFinished(this.currentState.items);
       } else if (event is CheckListReadEvent) {
       } else if (event is CheckListUpdateEvent) {
+        yield CheckListPageStateActionFinished(this.currentState.items);
         await _networkService.updateCheckListName(
             jsonEncode(event.checkListDTO.toJson()), token);
       } else if (event is CheckListDeleteEvent) {
         await _networkService.deleteCheckList(event.id, token);
       }
-      //Get items from back-end
-      List<CheckListDTO> items = _jsonService
-          .decodeCheckLists(await _networkService.getCheckLists(token));
 
-      yield CheckListPageStateActionFinished(items);
-      yield CheckListPageStateAwaitAction(items);
+      yield CheckListPageStateAwaitAction(this.currentState.items);
     } catch (e) {
       print(e);
       if (e is UnauthorisedException) {
