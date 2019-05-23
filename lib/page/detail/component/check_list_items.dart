@@ -1,8 +1,6 @@
 import 'package:check_list_front_end/bloc/detail/check_list_item_crud_bloc.dart';
 import 'package:check_list_front_end/bloc/detail/check_list_item_detail_page_state.dart';
 import 'package:check_list_front_end/bloc/detail/check_list_item_events.dart';
-import 'package:check_list_front_end/bloc/list/check_list_state.dart';
-import 'package:check_list_front_end/domain/dto/check_list_item_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,12 +19,16 @@ class _CheckListItemsDetailWidgetState
   String parentId;
 
   _CheckListItemsDetailWidgetState({this.parentId});
+  CheckListItemCrudBloc _checkListItemCrudBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkListItemCrudBloc = BlocProvider.of<CheckListItemCrudBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    CheckListItemCrudBloc _checkListItemCrudBloc =
-        BlocProvider.of<CheckListItemCrudBloc>(context);
-
     return RefreshIndicator(
       child: BlocBuilder<CheckListItemEvent, CheckListItemDetailPageState>(
         bloc: _checkListItemCrudBloc,
@@ -65,5 +67,11 @@ class _CheckListItemsDetailWidgetState
         return _checkListItemCrudBloc.refresh(parentId);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _checkListItemCrudBloc.dispose();
   }
 }

@@ -1,7 +1,6 @@
 import 'package:check_list_front_end/bloc/list/check_list_crud_bloc.dart';
 import 'package:check_list_front_end/bloc/list/check_list_events.dart';
 import 'package:check_list_front_end/bloc/list/check_list_state.dart';
-import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
 import 'package:check_list_front_end/page/detail/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,10 +50,6 @@ class _CheckListWidgetState extends State<CheckListWidget> {
                           ),
                         );
                       },
-                      leading: Icon(
-                        Icons.check_circle_outline,
-                        size: 30,
-                      ),
                       title: Text(item.name),
                       subtitle: Text(item.creationDate.toIso8601String()),
                     ),

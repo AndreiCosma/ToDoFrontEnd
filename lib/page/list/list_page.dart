@@ -1,6 +1,6 @@
 import 'package:check_list_front_end/bloc/list/check_list_crud_bloc.dart';
+import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
 import 'package:check_list_front_end/component/list_page_template.dart';
-import 'package:check_list_front_end/page/user/login/login_page.dart';
 import 'package:check_list_front_end/service/user_shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,8 +9,12 @@ import 'component/check_list_widget.dart';
 
 class ListPage extends StatelessWidget {
   final CheckListCrudBloc bloc = CheckListCrudBloc();
+  NavigationBloc _navigationBloc;
   @override
   Widget build(BuildContext context) {
+    _navigationBloc = BlocProvider.of<NavigationBloc>(context);
+    ;
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       drawer: Drawer(
@@ -54,13 +58,7 @@ class ListPage extends StatelessWidget {
       await userSharedPreferencesService.deleteToken();
       print('!HAS RT ->>' +
           (await userSharedPreferencesService.hasRefreshToken()).toString());
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-      );
+      _navigationBloc.dispatchNavigationEventLogin();
     } catch (e) {
       print(e);
     }

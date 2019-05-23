@@ -10,13 +10,18 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
 
   @override
   Stream<NavigationState> mapEventToState(NavigationEvent event) async* {
+    print('NAVIGATION HIT -----------> CURRENT STATE:$currentState');
     if (event is NavigationEventMainPage) {
+      print('NAVIGATION HIT ----------->NextState:MAIN>');
       yield NavigationStateMain();
     } else if (event is NavigationEventLogin) {
+      print('NAVIGATION HIT ----------->NextState:LOGIN>');
       yield NavigationStateLogin();
     } else if (event is NavigationEventRegister) {
+      print('NAVIGATION HIT ---------->NextState:REGISTER>');
       yield NavigationStateRegister();
     } else if (event is NavigationEventSplash) {
+      print('NAVIGATION HIT ----------->NextState:SPLASH>');
       yield NavigationStateSplash(event.userLoginRequestDTO);
     }
   }

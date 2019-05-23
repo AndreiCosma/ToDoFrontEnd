@@ -28,11 +28,13 @@ class _MyApp extends State<MyApp> {
           home: BlocBuilder<NavigationEvent, NavigationState>(
             bloc: _navigationBloc,
             builder: (BuildContext context, NavigationState state) {
+              print('HIT -----> STATE: $state');
               if (state is NavigationStateMain) {
                 return ListPage();
               } else if (state is NavigationStateLogin) {
                 return LoginPage();
               } else if (state is NavigationStateRegister) {
+                print('PRE-REGISTER HIT ------------>');
                 return RegisterPage();
               } else if (state is NavigationStateSplash) {
                 return SplashPage(
@@ -45,7 +47,7 @@ class _MyApp extends State<MyApp> {
 
   @override
   void dispose() {
-    _navigationBloc.dispose();
     super.dispose();
+    _navigationBloc.dispose();
   }
 }

@@ -80,6 +80,7 @@ class _LoginPage extends State<LoginPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)),
                           onPressed: () {
+                            print('PRESSED ---------->');
                             _navigationBloc.dispatchNavigationEventSplash(
                                 UserLoginRequestDTO(
                               username: 'AndreiCosma',
