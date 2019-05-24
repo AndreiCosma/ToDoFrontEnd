@@ -1,6 +1,7 @@
 import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
 import 'package:check_list_front_end/service/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'component/credential.dart';
 
@@ -16,8 +17,9 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   void initState() {
-    super.initState();
+    _navigationBloc = BlocProvider.of<NavigationBloc>(this.context);
     checkIfRefreshTokenIsValid();
+    super.initState();
   }
 
   @override

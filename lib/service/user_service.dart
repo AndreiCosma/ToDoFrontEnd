@@ -21,7 +21,7 @@ class UserService {
   Future<String> refreshToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String rtVal = prefs.getString(kRefreshToken);
-
+    print('Token: $rtVal');
     TokenDTO tokenDTO =
         jsonService.decodeToken(await networkService.refreshToken(rtVal));
 
