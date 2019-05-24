@@ -30,11 +30,6 @@ class _MyApp extends State<MyApp> {
         bloc: _navigationBloc,
         child: MaterialApp(
           theme: ThemeData.dark(),
-//          theme: ThemeData.dark().copyWith(
-//            accentColor: Colors.orangeAccent,
-//            floatingActionButtonTheme: FloatingActionButtonThemeData()
-//                .copyWith(backgroundColor: Colors.orangeAccent, elevation: 16),
-//          ),
           home: BlocBuilder<NavigationEvent, NavigationState>(
             bloc: _navigationBloc,
             builder: (BuildContext context, NavigationState state) {

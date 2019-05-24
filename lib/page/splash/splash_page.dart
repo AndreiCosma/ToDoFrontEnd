@@ -32,6 +32,7 @@ class _SplashPage extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
 //        decoration: BoxDecoration(
 //          image: DecorationImage(

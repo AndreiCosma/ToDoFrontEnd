@@ -1,28 +1,41 @@
+import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
+import 'package:check_list_front_end/domain/dto/user_login_request_dto.dart';
+import 'package:check_list_front_end/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class CredentialWidget extends StatefulWidget {
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-  final VoidCallback loginCallback;
-
-  const CredentialWidget(
-      {Key key,
-      this.usernameController,
-      this.passwordController,
-      this.loginCallback})
-      : super(key: key);
   @override
-  _CredentialWidgetState createState() => _CredentialWidgetState(
-      this.usernameController, this.passwordController, this.loginCallback);
+  _CredentialWidgetState createState() => _CredentialWidgetState();
 }
 
 class _CredentialWidgetState extends State<CredentialWidget> {
-  bool isObscured = true;
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-  final VoidCallback loginCallback;
-  _CredentialWidgetState(
-      this.usernameController, this.passwordController, this.loginCallback);
+  bool _isObscured = true;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  NavigationBloc _navigationBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _navigationBloc = BlocProvider.of<NavigationBloc>(this.context);
+    _usernameController.addListener(() => setState(() {}));
+    _passwordController.addListener(() => setState(() {}));
+  }
+
+  VoidCallback _getButtonCallback() =>
+      _usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty
+          ? () {
+              _navigationBloc.dispatchNavigationEventSplash(UserLoginRequestDTO(
+                username: _usernameController.text,
+                password: _passwordController.text,
+                clientName: kClientNameVal,
+                clientSecret: kClientSecretVal,
+                deviceUUID: Uuid().v4(),
+              ));
+            }
+          : null;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +47,7 @@ class _CredentialWidgetState extends State<CredentialWidget> {
           Container(
             padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
             child: TextFormField(
-              controller: usernameController,
+              controller: _usernameController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Theme.of(context).cardColor,
@@ -53,8 +66,9 @@ class _CredentialWidgetState extends State<CredentialWidget> {
           Container(
             padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
             child: TextFormField(
-              controller: passwordController,
-              obscureText: isObscured,
+              autovalidate: true,
+              controller: _passwordController,
+              obscureText: _isObscured,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Theme.of(context).cardColor,
@@ -65,13 +79,9 @@ class _CredentialWidgetState extends State<CredentialWidget> {
                   ),
                 ),
                 prefixIcon:
-                    Icon(isObscured ? Icons.lock_outline : Icons.lock_open),
+                    Icon(_isObscured ? Icons.lock_outline : Icons.lock_open),
                 suffixIcon: InkWell(
-                  onTap: () {
-                    setState(() {
-                      isObscured = !isObscured;
-                    });
-                  },
+                  onTap: () => setState(() => _isObscured = !_isObscured),
                   child: Icon(Icons.remove_red_eye),
                 ),
               ),
@@ -103,9 +113,10 @@ class _CredentialWidgetState extends State<CredentialWidget> {
                   width: 16.0,
                 ),
                 RaisedButton(
+                  disabledColor: Colors.grey,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
-                  onPressed: loginCallback,
+                  onPressed: _getButtonCallback(),
                   child: Icon(
                     Icons.arrow_forward,
                     size: 36,
