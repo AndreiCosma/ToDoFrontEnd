@@ -21,4 +21,9 @@ class UserLoginRequestDTO {
         kClientSecret: this.clientSecret,
         kDeviceUUID: this.deviceUUID
       };
+
+  @override
+  String toString() {
+    return 'UserLoginRequestDTO{username: $username, password: $password, clientName: $clientName, clientSecret: $clientSecret, deviceUUID: $deviceUUID}';
+  }
 }

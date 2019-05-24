@@ -29,45 +29,37 @@ class _RegisterPage extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Container(
+        body: SingleChildScrollView(
           child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('images/login.png'),
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Column(
+            padding: EdgeInsets.only(top: 48),
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
                         'Create account',
-                        style: kCreateAccountTextStyle,
+                        style: TextStyle(
+                          fontSize: 34,
+                          letterSpacing: 0.15,
+                          textBaseline: TextBaseline.alphabetic,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                       SizedBox(
                         height: 32.0,
                       )
                     ],
                   ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: RegisterFormWidget(
+                  RegisterFormWidget(
                     usernameController: usernameController,
                     passwordController: passwordController,
                     passwordConfirmationController:
                         passwordConfirmationController,
                     emailController: emailController,
                   ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
+                  Container(
                     margin: EdgeInsets.only(right: 16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -83,7 +75,6 @@ class _RegisterPage extends State<RegisterPage> {
                               style: TextStyle(
                                 fontSize: 24,
                                 letterSpacing: 0.0,
-                                color: Colors.white70,
                               ),
                             ),
                             SizedBox(
@@ -109,7 +100,6 @@ class _RegisterPage extends State<RegisterPage> {
                               child: Icon(
                                 Icons.arrow_forward,
                                 size: 36,
-                                color: Colors.white70,
                               ),
                             )
                           ],
@@ -122,7 +112,6 @@ class _RegisterPage extends State<RegisterPage> {
                               style: TextStyle(
                                 fontSize: 24,
                                 letterSpacing: 0.0,
-                                color: Colors.white70,
                               ),
                             ),
                             SizedBox(
@@ -138,7 +127,6 @@ class _RegisterPage extends State<RegisterPage> {
                               child: Icon(
                                 Icons.arrow_forward,
                                 size: 36,
-                                color: Colors.white70,
                               ),
                             )
                           ],
@@ -146,8 +134,8 @@ class _RegisterPage extends State<RegisterPage> {
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

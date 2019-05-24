@@ -29,8 +29,12 @@ class _MyApp extends State<MyApp> {
   Widget build(BuildContext context) => BlocProvider<NavigationBloc>(
         bloc: _navigationBloc,
         child: MaterialApp(
-          title: 'Flutter Demo',
           theme: ThemeData.dark(),
+//          theme: ThemeData.dark().copyWith(
+//            accentColor: Colors.orangeAccent,
+//            floatingActionButtonTheme: FloatingActionButtonThemeData()
+//                .copyWith(backgroundColor: Colors.orangeAccent, elevation: 16),
+//          ),
           home: BlocBuilder<NavigationEvent, NavigationState>(
             bloc: _navigationBloc,
             builder: (BuildContext context, NavigationState state) {
@@ -41,6 +45,7 @@ class _MyApp extends State<MyApp> {
               } else if (state is NavigationStateRegister) {
                 return RegisterPage();
               } else if (state is NavigationStateSplash) {
+                print(state.userLoginRequestDTO.toString());
                 return SplashPage(
                     userLoginRequestDTO: state.userLoginRequestDTO);
               }

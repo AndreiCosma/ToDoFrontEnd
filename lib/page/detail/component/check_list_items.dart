@@ -78,7 +78,7 @@ class _CheckListItemsDetailWidgetState
         TextEditingController(text: item.name);
     Alert(
         context: context,
-        title: 'Edit',
+        title: ' ',
         style: kEditAlertStyle,
         content: Column(
           children: <Widget>[

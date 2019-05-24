@@ -30,91 +30,56 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Container(
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('images/login.png'),
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Column(
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Container(
+              margin: EdgeInsets.only(top: 48),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
                         'Hello',
-                        style: kBrandingTextStyle,
+                        style: TextStyle(
+                          fontSize: 96,
+                          letterSpacing: -1.5,
+                          textBaseline: TextBaseline.alphabetic,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         'Sign in to your account',
-                        style: kBrandingMessageTextStyle,
+                        style: TextStyle(
+                          fontSize: 20,
+                          letterSpacing: 0.15,
+                          textBaseline: TextBaseline.alphabetic,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: CredentialWidget(
+                  CredentialWidget(
                     usernameController: usernameController,
                     passwordController: passwordController,
+                    loginCallback: () {
+                      _navigationBloc
+                          .dispatchNavigationEventSplash(UserLoginRequestDTO(
+                        username: usernameController.text,
+                        password: passwordController.text,
+                        clientName: kClientNameVal,
+                        clientSecret: kClientSecretVal,
+                        deviceUUID: Uuid().v4(),
+                      ));
+                    },
                   ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          'Sign in',
-                          style: TextStyle(
-                            fontSize: 24,
-                            letterSpacing: 0.0,
-                            color: Colors.white70,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16.0,
-                        ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
-                          onPressed: () {
-                            print('PRESSED ---------->');
-                            _navigationBloc.dispatchNavigationEventSplash(
-                                UserLoginRequestDTO(
-                              username: usernameController.text,
-                              password: passwordController.text,
-                              clientName: kClientNameVal,
-                              clientSecret: kClientSecretVal,
-                              deviceUUID: Uuid().v4(),
-                            ));
-                          },
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 36,
-                            color: Colors.white70,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         'Don\'t have an account?',
-                        style: TextStyle(color: Colors.white70),
                       ),
                       SizedBox(
                         width: 8.0,
@@ -126,15 +91,14 @@ class _LoginPage extends State<LoginPage> {
                         child: Text(
                           'Create',
                           style: TextStyle(
-                              color: Colors.white70,
                               decoration: TextDecoration.underline,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

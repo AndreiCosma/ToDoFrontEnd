@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:check_list_front_end/util/constants.dart';
 
 class BrandWidget extends StatelessWidget {
   @override
@@ -12,13 +11,16 @@ class BrandWidget extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.white70,
                   width: 4.0,
                 ),
               ),
               child: Text(
                 'To-Do',
-                style: kBrandingTextStyle,
+                style: TextStyle(
+                    fontSize: 96,
+                    letterSpacing: -1.5,
+                    textBaseline: TextBaseline.alphabetic,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(
@@ -26,7 +28,11 @@ class BrandWidget extends StatelessWidget {
             ),
             Text(
               'EASIER THAN EVER',
-              style: kBrandingMessageTextStyle,
+              style: TextStyle(
+                  fontSize: 20,
+                  letterSpacing: 0.15,
+                  textBaseline: TextBaseline.alphabetic,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 16.0,
@@ -35,7 +41,7 @@ class BrandWidget extends StatelessWidget {
               width: 64.0,
               height: 3.0,
               child: Container(
-                color: Colors.white70,
+                color: Theme.of(context).accentColor,
               ),
             ),
           ],

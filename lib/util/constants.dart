@@ -5,22 +5,19 @@ const kBrandingTextStyle = TextStyle(
     fontSize: 96,
     letterSpacing: -1.5,
     textBaseline: TextBaseline.alphabetic,
-    fontWeight: FontWeight.bold,
-    color: Colors.white70);
+    fontWeight: FontWeight.bold);
 
 const kBrandingMessageTextStyle = TextStyle(
     fontSize: 20,
     letterSpacing: 0.15,
     textBaseline: TextBaseline.alphabetic,
-    fontWeight: FontWeight.bold,
-    color: Colors.white70);
+    fontWeight: FontWeight.bold);
 
 const kSecondaryTextStyle = TextStyle(
     fontSize: 20,
     letterSpacing: 0.15,
     textBaseline: TextBaseline.alphabetic,
-    fontWeight: FontWeight.normal,
-    color: Colors.white70);
+    fontWeight: FontWeight.normal);
 
 const kLogoutTextStyle = TextStyle(
   fontSize: 34,
@@ -63,7 +60,7 @@ const kFormEmailItemDecoration = InputDecoration(
 );
 
 const kCommitButtonTextStyle =
-    TextStyle(color: Colors.white70, fontSize: 20, letterSpacing: 0.15);
+    TextStyle(color: Colors.black, fontSize: 20, letterSpacing: 0.15);
 
 const kEditAlertStyle = AlertStyle(
   descStyle: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold),

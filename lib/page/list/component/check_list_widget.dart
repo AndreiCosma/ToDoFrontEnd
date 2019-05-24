@@ -4,6 +4,7 @@ import 'package:check_list_front_end/bloc/list/check_list_state.dart';
 import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
 import 'package:check_list_front_end/page/detail/detail_page.dart';
 import 'package:check_list_front_end/util/constants.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -27,37 +28,45 @@ class _CheckListWidgetState extends State<CheckListWidget> {
         bloc: _checkListCrudBloc,
         builder: (context, state) {
           print('Check Lists COUNT ---> ${state.items.length}');
-          return ListView.builder(
+          return ListView.separated(
+            separatorBuilder: (context, int) => Divider(
+                  height: 1,
+                ),
             itemCount: state.items.length,
             itemBuilder: (BuildContext context, int index) {
               final item = state.items[index];
               if (item != null) {
                 return Dismissible(
+                  background: Container(
+                    color: Colors.redAccent,
+                  ),
                   onDismissed: (dismissDirection) {
                     _checkListCrudBloc.dispatchDeleteList(item);
                   },
                   key: Key(item.id),
-                  child: Card(
-                    elevation: 16.0,
-                    child: ListTile(
-                      onLongPress: () {
-                        //Show edit alert dialog
-                        showEditDialog(item, _checkListCrudBloc);
-                      },
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailPage(
-                                  parentName: item.name,
-                                  parentId: item.id,
-                                ),
-                          ),
-                        );
-                      },
-                      title: Text(item.name),
-                      subtitle: Text(item.creationDate.toIso8601String()),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.check_circle,
+                      color: Theme.of(context).accentColor,
                     ),
+                    onLongPress: () {
+                      //Show edit alert dialog
+                      showEditDialog(item, _checkListCrudBloc);
+                    },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailPage(
+                                parentName: item.name,
+                                parentId: item.id,
+                              ),
+                        ),
+                      );
+                    },
+                    title: Text(item.name),
+                    subtitle: Text(formatDate(item.creationDate,
+                        [yyyy, '-', MM, '-', dd, ' ', hh, ':', mm])),
                   ),
                 );
               }
@@ -74,7 +83,7 @@ class _CheckListWidgetState extends State<CheckListWidget> {
     Alert(
         style: kEditAlertStyle,
         context: context,
-        title: 'Edit',
+        title: ' ',
         content: Column(
           children: <Widget>[
             TextField(

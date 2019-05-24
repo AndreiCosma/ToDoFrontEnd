@@ -1,5 +1,4 @@
 import 'package:check_list_front_end/bloc/detail/check_list_item_crud_bloc.dart';
-import 'package:check_list_front_end/component/list_page_template.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,6 +18,7 @@ class _DetailPage extends State<DetailPage> {
   CheckListItemCrudBloc _checkListItemCrudBloc;
   final String parentId;
   final String parentName;
+
   _DetailPage(this.parentId, this.parentName) {
     print('_DetailPage constructor called');
     _checkListItemCrudBloc = CheckListItemCrudBloc(parentId);
@@ -32,16 +32,35 @@ class _DetailPage extends State<DetailPage> {
         title: Text(parentName),
       ),
       body: BlocProvider<CheckListItemCrudBloc>(
-        bloc: _checkListItemCrudBloc,
-        child: ListPageTemplate(
-          callback: () {
-            _checkListItemCrudBloc.dispatchNewListItem(parentId);
-          },
-          listWidget: CheckListItemsDetailWidget(
-            parentId: parentId,
-          ),
-        ),
-      ),
+          bloc: _checkListItemCrudBloc,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  flex: 9,
+                  child: CheckListItemsDetailWidget(
+                    parentId: parentId,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: FlatButton(
+                    onPressed: () {
+                      _checkListItemCrudBloc.dispatchNewListItem(parentId);
+                    },
+                    child: Container(
+                      child: Center(
+                        child: Text('+ Add New'),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

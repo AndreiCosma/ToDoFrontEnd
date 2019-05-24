@@ -17,6 +17,7 @@ dependencies:
   uuid: ^2.0.1
   equatable: ^0.2.4
   rflutter_alert: ^1.0.2
+  date_format: ^1.0.6
 
 
 dev_dependencies:

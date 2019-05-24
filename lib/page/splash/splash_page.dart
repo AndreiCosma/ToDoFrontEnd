@@ -1,7 +1,6 @@
 import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
 import 'package:check_list_front_end/domain/dto/user_login_request_dto.dart';
 import 'package:check_list_front_end/service/user_service.dart';
-import 'package:check_list_front_end/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -34,12 +33,12 @@ class _SplashPage extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('images/splash_screen.jpg'),
-          ),
-        ),
+//        decoration: BoxDecoration(
+//          image: DecorationImage(
+//            fit: BoxFit.cover,
+//            image: AssetImage('images/splash_screen.jpg'),
+//          ),
+//        ),
         child: Stack(
           children: <Widget>[
             Center(
@@ -51,7 +50,7 @@ class _SplashPage extends State<SplashPage> {
               right: 16.0,
               child: Center(
                 child: SpinKitCubeGrid(
-                  color: Colors.white70,
+                  color: Theme.of(context).accentColor,
                 ),
               ),
             ),
@@ -62,7 +61,11 @@ class _SplashPage extends State<SplashPage> {
               child: Center(
                 child: Text(
                   'LOADING',
-                  style: kSecondaryTextStyle,
+                  style: TextStyle(
+                      fontSize: 20,
+                      letterSpacing: 0.15,
+                      textBaseline: TextBaseline.alphabetic,
+                      fontWeight: FontWeight.normal),
                 ),
               ),
             )
