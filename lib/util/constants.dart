@@ -97,3 +97,6 @@ const kClientSecret = 'clientSecret';
 const kUserPasswordConfirmation = 'passwordConfirmation';
 const kUserRegUsername = 'userName';
 const kUserEmail = 'email';
+
+const kEditDate = 'editDate';
+const kPosition = 'position';

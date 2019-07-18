@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
 import 'package:check_list_front_end/exception/server_code_exception.dart';
-import 'package:check_list_front_end/service/json_service.dart';
 import 'package:check_list_front_end/service/network_service.dart';
 import 'package:check_list_front_end/service/user_service.dart';
 
@@ -11,9 +10,8 @@ import 'check_list_events.dart';
 import 'check_list_state.dart';
 
 class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
-  JsonService _jsonService = JsonService();
-  NetworkService _networkService = NetworkService();
-  UserService _userService = UserService();
+  NetworkService _networkService = NetworkService.getInstance();
+  UserService _userService = UserService.getInstance();
 
   CheckListCrudBloc() {
     print('Constructor called LISTS');
@@ -56,10 +54,11 @@ class CheckListCrudBloc extends Bloc<CheckListEvent, CheckListPageState> {
       String token = await _userService.getToken();
       if (event is CheckListRefreshEvent) {
         //Get items from back-end
-        yield CheckListPageStateActionFinished(_jsonService
-            .decodeCheckLists(await _networkService.getCheckLists(token)));
+        yield CheckListPageStateActionFinished(List<CheckListDTO>.from(
+            jsonDecode(await _networkService.getCheckLists(token))
+                .map((item) => CheckListDTO.fromJson(item))));
       } else if (event is CheckListCreateEvent) {
-        CheckListDTO item = _jsonService.decodeCheckList(
+        CheckListDTO item = CheckListDTO.fromJson(
             jsonDecode(await _networkService.requestNewCheckList(token)));
         this.currentState.items.add(item);
         yield CheckListPageStateActionFinished(this.currentState.items);

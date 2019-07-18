@@ -1,15 +1,23 @@
+import 'dart:convert';
+
 import 'package:check_list_front_end/exception/server_code_exception.dart';
 import 'package:http/http.dart';
 
 class NetworkService {
+  static NetworkService _instance;
+
+  NetworkService._();
+
   static const String BASE_URL =
       'https://checklistbackend.cfapps.eu10.hana.ondemand.com';
+
   Future<String> getCheckLists(String token) async {
     Response response = await get(
       BASE_URL + '/api/v1/list/all',
       headers: {'Authorization': 'Bearer ' + token},
     );
     if (response.statusCode == 200) {
+      print(response.body);
       return Future.value(response.body);
     } else if (response.statusCode == 401) {
       throw UnauthorisedException();
@@ -137,9 +145,10 @@ class NetworkService {
     }
   }
 
-  Future<String> requestLogin(String userCredentials) async {
+  Future<String> requestLogin(Map userCredentials) async {
     Response response = await post(BASE_URL + '/login',
-        headers: {'content-type': 'application/json'}, body: userCredentials);
+        headers: {'content-type': 'application/json'},
+        body: jsonEncode(userCredentials));
     if (response.statusCode == 200) {
       return response.body;
     } else if (response.statusCode == 401) {
@@ -159,5 +168,13 @@ class NetworkService {
     } else {
       throw Exception('HTTP CODE NOT 200! Code is ${response.statusCode}');
     }
+  }
+
+  static NetworkService getInstance() {
+    if (_instance == null) {
+      _instance = NetworkService._();
+    }
+
+    return _instance;
   }
 }

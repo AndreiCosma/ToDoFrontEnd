@@ -1,8 +1,10 @@
 import 'package:check_list_front_end/bloc/list/check_list_crud_bloc.dart';
 import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
 import 'package:check_list_front_end/service/user_shared_preferences_service.dart';
+import 'package:check_list_front_end/theme/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import 'component/check_list_widget.dart';
 
@@ -22,6 +24,12 @@ class ListPage extends StatelessWidget {
         title: Text('To-Do'),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.all_inclusive),
+            onPressed: () {
+              Provider.of<ThemeInfoNotifier>(context).changeTheme();
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () => logOut(_navigationBloc, context),
           ),
@@ -38,7 +46,6 @@ class ListPage extends StatelessWidget {
     try {
       UserSharedPreferencesService userSharedPreferencesService =
           UserSharedPreferencesService();
-
       await userSharedPreferencesService.deleteRefreshToken();
       await userSharedPreferencesService.deleteToken();
       print('!HAS RT ->>' +

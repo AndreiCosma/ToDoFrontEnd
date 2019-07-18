@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> {
   NavigationBloc _navigationBloc;
 
-  UserService _userService = UserService();
+  UserService _userService = UserService.getInstance();
 
   @override
   void initState() {

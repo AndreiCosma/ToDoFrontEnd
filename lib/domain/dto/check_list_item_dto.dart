@@ -5,19 +5,32 @@ class CheckListItemDTO {
   final String id;
   String name;
   bool checked;
+  DateTime editDate;
+  int position;
 
-  CheckListItemDTO({this.listId, this.id, this.name, this.checked});
+  CheckListItemDTO(
+      {this.listId,
+      this.id,
+      this.name,
+      this.checked,
+      this.editDate,
+      this.position});
 
   Map<String, dynamic> toJson() => {
         kCheckListItemParentId: this.listId,
         kCheckListItemId: this.id,
         kCheckListItemName: this.name,
-        kCheckListItemChecked: this.checked
+        kCheckListItemChecked: this.checked,
+        kEditDate: this.editDate,
+        kPosition: this.position
       };
 
-  static List toJsonList(List<CheckListItemDTO> list) {
-    List jsonList = List();
-    list.map((item) => jsonList.add(item.toJson())).toList();
-    return jsonList;
-  }
+  factory CheckListItemDTO.fromJson(Map<String, dynamic> json) =>
+      CheckListItemDTO(
+          listId: json[kCheckListId],
+          id: json[kCheckListItemId],
+          name: json[kCheckListItemName],
+          checked: json[kCheckListItemChecked],
+          editDate: DateTime(json[kEditDate]),
+          position: json[kPosition]);
 }

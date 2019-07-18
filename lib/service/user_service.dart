@@ -6,12 +6,14 @@ import 'package:check_list_front_end/domain/dto/user_registration_request_dto.da
 import 'package:check_list_front_end/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'json_service.dart';
 import 'network_service.dart';
 
 class UserService {
-  NetworkService networkService = NetworkService();
-  JsonService jsonService = JsonService();
+  NetworkService networkService = NetworkService.getInstance();
+
+  static UserService _instance;
+
+  UserService._();
 
   Future<String> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,7 +25,7 @@ class UserService {
     String rtVal = prefs.getString(kRefreshToken);
     print('Token: $rtVal');
     TokenDTO tokenDTO =
-        jsonService.decodeToken(await networkService.refreshToken(rtVal));
+        TokenDTO.fromJson(jsonDecode(await networkService.refreshToken(rtVal)));
 
     await prefs.setString(kAccessToken, tokenDTO.accessToken);
     await prefs.setString(kRefreshToken, tokenDTO.refreshToken);
@@ -31,11 +33,11 @@ class UserService {
   }
 
   Future<TokenDTO> attemptLogin(UserLoginRequestDTO userCredentials) async {
-    TokenDTO tokenDTO = jsonService.decodeToken(
-        await networkService.requestLogin(jsonEncode(userCredentials)));
+    TokenDTO tokenDTO = TokenDTO.fromJson(jsonDecode(
+        await networkService.requestLogin(userCredentials.toJson())));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(kAccessToken, tokenDTO.accessToken);
-    prefs.setString(kRefreshToken, tokenDTO.refreshToken);
+    await prefs.setString(kAccessToken, tokenDTO.accessToken);
+    await prefs.setString(kRefreshToken, tokenDTO.refreshToken);
 
     return tokenDTO;
   }
@@ -43,5 +45,12 @@ class UserService {
   Future registerUser(UserRegistrationDTO user) async {
     await networkService.requestNewAccount(jsonEncode(user));
     return;
+  }
+
+  static UserService getInstance() {
+    if (_instance == null) {
+      _instance = UserService._();
+    }
+    return _instance;
   }
 }

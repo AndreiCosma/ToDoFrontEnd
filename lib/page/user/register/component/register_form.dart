@@ -1,38 +1,32 @@
+import 'package:check_list_front_end/bloc/navigation/navigation_bloc.dart';
+import 'package:check_list_front_end/domain/dto/user_registration_request_dto.dart';
+import 'package:check_list_front_end/service/user_service.dart';
+import 'package:check_list_front_end/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterFormWidget extends StatefulWidget {
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-  final TextEditingController passwordConfirmationController;
-  final TextEditingController emailController;
-
-  RegisterFormWidget(
-      {Key key,
-      this.usernameController,
-      this.passwordController,
-      this.passwordConfirmationController,
-      this.emailController})
-      : super(key: key);
-
   @override
-  _RegisterFormWidget createState() => _RegisterFormWidget(
-      this.usernameController,
-      this.passwordController,
-      this.passwordConfirmationController,
-      this.emailController);
+  _RegisterFormWidget createState() => _RegisterFormWidget();
 }
 
 class _RegisterFormWidget extends State<RegisterFormWidget> {
   bool isObscuredPassword = true;
   bool isObscurePasswordConfirmation = true;
 
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-  final TextEditingController passwordConfirmationController;
-  final TextEditingController emailController;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordConfirmationController =
+      TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  NavigationBloc _navigationBloc;
+  final UserService _userService = UserService.getInstance();
 
-  _RegisterFormWidget(this.usernameController, this.passwordController,
-      this.passwordConfirmationController, this.emailController);
+  @override
+  void initState() {
+    super.initState();
+    _navigationBloc = BlocProvider.of<NavigationBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) => Form(
@@ -137,6 +131,46 @@ class _RegisterFormWidget extends State<RegisterFormWidget> {
                 ),
                 autovalidate: true,
                 validator: (value) {},
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 32.0, right: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    'Create',
+                    style: TextStyle(
+                      fontSize: 24,
+                      letterSpacing: 0.0,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16.0,
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    onPressed: () {
+                      print('PRESSED ----CREATE------>');
+                      _userService.registerUser(UserRegistrationDTO(
+                        email: emailController.text,
+                        username: usernameController.text,
+                        password: passwordController.text,
+                        passwordConfirmation:
+                            passwordConfirmationController.text,
+                        clientSecret: kClientSecretVal,
+                        clientName: kClientNameVal,
+                      ));
+
+                      _navigationBloc.dispatchNavigationEventLogin();
+                    },
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 36,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

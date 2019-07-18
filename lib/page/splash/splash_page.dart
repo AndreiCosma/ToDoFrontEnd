@@ -17,7 +17,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPage extends State<SplashPage> {
   NavigationBloc _navigationBloc;
-  UserService _userService = UserService();
+  UserService _userService = UserService.getInstance();
   final UserLoginRequestDTO userLoginRequestDTO;
 
   _SplashPage(this.userLoginRequestDTO);

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:check_list_front_end/domain/dto/check_list_dto.dart';
 import 'package:check_list_front_end/domain/dto/check_list_item_dto.dart';
 import 'package:check_list_front_end/exception/server_code_exception.dart';
-import 'package:check_list_front_end/service/json_service.dart';
 import 'package:check_list_front_end/service/network_service.dart';
 import 'package:check_list_front_end/service/user_service.dart';
 
@@ -12,9 +12,8 @@ import 'check_list_item_events.dart';
 
 class CheckListItemCrudBloc
     extends Bloc<CheckListItemEvent, CheckListItemDetailPageState> {
-  JsonService _jsonService = JsonService();
-  NetworkService _networkService = NetworkService();
-  UserService _userService = UserService();
+  NetworkService _networkService = NetworkService.getInstance();
+  UserService _userService = UserService.getInstance();
 
   String checkListParentId;
 
@@ -58,14 +57,12 @@ class CheckListItemCrudBloc
 
       if (event is CheckListItemRefreshEvent) {
         //Get items from backend
-        yield CheckListItemDetailPageStateActionFinished(_jsonService
-            .decodeCheckList(
-              jsonDecode(
-                  await _networkService.getCheckList(checkListParentId, token)),
-            )
-            .items);
+        yield CheckListItemDetailPageStateActionFinished(CheckListDTO.fromJson(
+          jsonDecode(
+              await _networkService.getCheckList(checkListParentId, token)),
+        ).items);
       } else if (event is CheckListItemCreateEvent) {
-        CheckListItemDTO item = _jsonService.decodeCheckListItem(jsonDecode(
+        CheckListItemDTO item = CheckListItemDTO.fromJson(jsonDecode(
             await _networkService.requestNewCheckListItem(event.id, token)));
         this.currentState.items.add(item);
         yield CheckListItemDetailPageStateActionFinished(
